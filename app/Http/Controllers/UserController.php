@@ -6,6 +6,8 @@ use App\Http\Requests\UserCreateRequest;
 use App\Http\Requests\UserEditRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Spatie\Permission\Models\Role;
+use Illuminate\Support\Facades\Gate;
 
 class UserController extends Controller
 {
@@ -17,6 +19,7 @@ class UserController extends Controller
     public function index()
     {
         //
+        abort_if(Gate::denies('user_index'),403);
         $users=User::paginate(5);
         return view('users.index',compact('users'));
     }
@@ -29,7 +32,9 @@ class UserController extends Controller
     public function create()
     {
         //
-        return view('users.create');
+        abort_if(Gate::denies('user_create'),403);
+        $roles=Role::all()->pluck('name','id');
+        return view('users.create',compact('roles'));
     }
 
     /**
@@ -51,6 +56,8 @@ class UserController extends Controller
                     +[
                         'password' => bcrypt($request->input('password')),
                     ]);
+        $roles=$request->input('roles',[]);
+        $user->syncRoles($roles);
         return redirect()->route('users.show',$user->id)->with('success','Usuareio creado correctamente');
     }
 
@@ -62,7 +69,9 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-        //        
+        //
+        abort_if(Gate::denies('user_show'),403);
+        $user->load('roles');        
         return view('users.show',compact('user'));
     }
 
@@ -75,7 +84,10 @@ class UserController extends Controller
     public function edit(User $user)
     {
         //
-        return view('users.edit',compact('user'));
+        abort_if(Gate::denies('user_edit'),403);
+        $roles=Role::all()->pluck('name','id');
+        $user->load('roles');
+        return view('users.edit',compact('user','roles'));
     }
 
     /**
@@ -94,8 +106,8 @@ class UserController extends Controller
             $data['password'] = bcrypt($password);   
         $user->update($data);
         
-        //$roles = $request->input('roles', []);
-        //$user->syncRoles($roles);  
+        $roles = $request->input('roles', []);
+        $user->syncRoles($roles);  
         return redirect()->route('users.show', $user->id)->with('success', 'Usuario actualizado correctamente');
     }
 
@@ -107,6 +119,13 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
+        abort_if(Gate::denies('user_destroy'),403);
+        //para que no elimine al mismo usuario que esta logueado
+        if (auth()->user()->id == $user->id) {
+            return redirect()->route('users.index');
+        }
+
+        $user->delete();
         $user->delete();
         return back()->with('success','Usuario eliminado Correptamente');
     }

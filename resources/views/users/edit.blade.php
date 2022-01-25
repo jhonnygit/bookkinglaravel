@@ -49,7 +49,7 @@
                   @endif
                 </div>
               </div>
-              {{--
+              
               <div class="row">
                 <label for="name" class="col-sm-2 col-form-label">Roles</label>
                 <div class="col-sm-7">
@@ -85,7 +85,7 @@
                     </div>
                 </div>
             </div>
-            --}}
+            
             </div>
             <!--Footer-->
             <div class="card-footer ml-auto mr-auto">

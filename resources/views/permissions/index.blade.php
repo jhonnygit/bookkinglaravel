@@ -39,31 +39,24 @@
                           <td>{{ $permission->created_at }}</td>
                           <td class="td-actions text-right">
                             @can('permission_show')
-                           
-                            @endcan
-
                             <a href="{{ route('permissions.show', $permission->id) }}" class="btn btn-info"><i
-                                class="material-icons">person</i></a>
-
-                            @can('permission_edit')
-                            
+                              class="material-icons">person</i></a>
                             @endcan
+                            @can('permission_edit')
                             <a href="{{ route('permissions.edit', $permission->id) }}" class="btn btn-warning"><i
-                                class="material-icons">edit</i></a>
-
+                              class="material-icons">edit</i></a>
+                            @endcan                           
 
                             @can('permission_destroy')
-                            
-                            @endcan
-
                             <form action="{{ route('permissions.destroy', $permission->id) }}" method="POST"
-                                style="display: inline-block;" onsubmit="return confirm('Seguro?')">
-                                @csrf
-                                @method('DELETE')
-                                <button class="btn btn-danger" type="submit" rel="tooltip">
-                                  <i class="material-icons">close</i>
-                                </button>
-                              </form>
+                              style="display: inline-block;" onsubmit="return confirm('Seguro?')">
+                              @csrf
+                              @method('DELETE')
+                              <button class="btn btn-danger" type="submit" rel="tooltip">
+                                <i class="material-icons">close</i>
+                              </button>
+                            </form>
+                            @endcan
                             </td>
                         </tr>
                         @empty

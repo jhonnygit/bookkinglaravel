@@ -45,27 +45,24 @@
                     </td>
                     <td class="td-actions text-right">
                     @can('role_show')
-                      
+                    <a href="{{ route('roles.show', $role->id) }}" class="btn btn-info"> <i
+                      class="material-icons">person</i> </a>
                     @endcan
-                        <a href="{{ route('roles.show', $role->id) }}" class="btn btn-info"> <i
-                        class="material-icons">person</i> </a>
+                        
                     @can('role_edit')
-                      
-                    @endcan
-                        <a href="{{ route('roles.edit', $role->id) }}" class="btn btn-success"> <i
-                        class="material-icons">edit</i> </a>
-
+                    <a href="{{ route('roles.edit', $role->id) }}" class="btn btn-success"> <i
+                      class="material-icons">edit</i> </a>
+                    @endcan                        
                     @can('role_destroy')
-                    
-                    @endcan
                     <form action="{{ route('roles.destroy', $role->id) }}" method="post"
-                        onsubmit="return confirm('areYouSure')" style="display: inline-block;">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit" rel="tooltip" class="btn btn-danger">
-                          <i class="material-icons">close</i>
-                        </button>
-                      </form>
+                      onsubmit="return confirm('areYouSure')" style="display: inline-block;">
+                      @csrf
+                      @method('DELETE')
+                      <button type="submit" rel="tooltip" class="btn btn-danger">
+                        <i class="material-icons">close</i>
+                      </button>
+                    </form>
+                    @endcan                    
                     </td>
                   </tr>
                   @empty
