@@ -92,8 +92,8 @@
       </form>
       <div class="row">
         <div class="col-6">
-            @if (Route::has('passwords.reset'))
-                <a href="{{ route('passwords.reset') }}" class="text-light">
+            @if (Route::has('password.request'))
+                <a href="{{ route('password.request') }}" class="text-light">
                     <small>{{ __('Forgot password?') }}</small>
                 </a>
             @endif
